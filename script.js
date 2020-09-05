@@ -13,7 +13,7 @@ let persons = Array.from({ length: 10 }, () => {
 		picture: faker.image.avatar(100, 100),
 	};
 });
-
+console.log(persons);
 const displayList = data => {
 	tbody.innerHTML = data
 		.map(
@@ -37,6 +37,7 @@ const displayList = data => {
 `
 		)
 		.join('');
+		
 };
 
 const editPartner = () => {
@@ -46,13 +47,91 @@ const editPartner = () => {
 const editPartnerPopup = () => {
 	// create edit popup here
 };
+const popup = document.createElement('form');
 
-const deletePartner = () => {
-	// code delete function gere
+const deletePartner = (e) => {
+
+	function wait(ms = 0) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+
+	async function destroyPopup(popup) {
+		popup.classList.remove('open');
+		await wait(1000);
+	
+		// remove the popup from the DOM
+		popup.remove();
+	
+		// remove it from the js memory
+		popup = null;
+	}
+
+	if (e.target.closest('button.delete')) {
+		function ask(optins) {
+		return new Promise(async function(resolve) {
+
+		const elToDelete = e.target.closest('tr');
+		// elToDelete.remove();
+		popup.classList.add('popup');
+
+		popup.insertAdjacentHTML(
+			'afterbegin', 
+			`<fieldset>
+				<p>Are you sure you want to delete</p>
+				<button class="cancel">Cancel</button>
+				<button type="button" class="confirmed">OK</button>
+			</fieldset>
+		`);
+
+		// if(optins.cancel) {
+		// 	const cancelBtn = document.querySelector('.cancel');
+		// 	cancelBtn.addEventListener('click', () => {
+		// 		resolve(null);
+		// 		destroyPopup(popup);
+		// 	}, { once: true });
+		// } 
+	document.body.appendChild(popup);
+	await wait(50);
+	popup.classList.add('open');
+	
+});
+
+}
+ask();
+
+}
+	
 };
 
-const deleteDeletePopup = () => {
+
+
+
+// const popup = document.createElement('form');
+
+// const deletePopup = () => {
 	// create confirmation popup here
-};
-
+	
+	// popup.classList.add('popup');
+	// popup.classList.add('open');
+	// const person = persons.find(person => person.id !== event);
+	// popup.insertAdjacentHTML(
+	// 	'afterbegin', 
+	// 	`<fieldset>
+	// 		<p>Are you sure you want to delete ${person.lastName}</p>
+	// 		<button class="cancel">Cancel</button>
+	// 		<button type="button" class="confirmed">OK</button>
+	// 	</fieldset>
+	// `);
+	// document.body.appendChild(popup);
+	// const cancelBtn = document.querySelector('button.cancel');
+	// if(cancelBtn) {
+	// 	// popup.classList.remove('open');
+	// }
+	// const confirmedBtn = document.querySelector('.confirmed');
+	// if(confirmedBtn) {
+	// 	const list = event.target.closest('tr');
+	// 	list.remove();
+	// } 
+// };
+window.addEventListener('click', deletePartner);
 displayList(persons);

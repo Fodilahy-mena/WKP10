@@ -144,3 +144,20 @@ transition: all 0.2s;
 .popup button:hover {
 	background-color: red;
 }
+
+fieldset {
+	display: flex;
+}
+
+input {
+	padding: 1rem;
+	border: 1px solid red;
+	font-size: 25px;
+	color: blue;
+	border-radius: 5px;
+}
+strong {
+	font-size: 30px;
+	font-weight: 700;
+	color: red;
+}

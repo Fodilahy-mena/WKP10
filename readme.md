@@ -30,6 +30,9 @@ When you'll click on the trash icon, a popup will also appear. It will ask you a
 ## Student Report
 
 -   What was the main challenge that you had to face during the project?
+
+ - Getting the patner deleted after the confirm button of the popup works was the hardest part, I could not get it.
 -   Did you use Promise callbacks? Or Async Await?
+ - I used some of them but I was struggling to get them work properly. 
 
 Good luck everybody 🐻

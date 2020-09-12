@@ -74,9 +74,9 @@ const editPartner = (id) => {
 	const editPerson = persons.find(person => person.id === id);
 	return new Promise(async function(resolve) {
 
-		const editPopup = document.createElement('form');
-		editPopup.classList.add('popup');
-		editPopup.insertAdjacentHTML(
+		const popupEditeList = document.createElement('form');
+		popupEditeList.classList.add('popup');
+		popupEditeList.insertAdjacentHTML(
 			'afterbegin', 
 			`<fieldset>
 				<label>Last name</label>
@@ -93,35 +93,35 @@ const editPartner = (id) => {
 				<button type="submit" class="confirmed">Save</button>
 			</fieldset>
 		`);
-		if(editPopup.cancel) {
-			console.log(editPopup.cancel);
-            const skipButton = editPopup.cancel;
+		if(popupEditeList.cancel) {
+			console.log(popupEditeList.cancel);
+            const skipButton = popupEditeList.cancel;
             skipButton.addEventListener('click', () => {
 				console.log('canel');
                 resolve(null);
-                destroyPopup(editPopup);
+                destroyPopup(popupEditeList);
 			}, { once: true });
 	
 
         }
-		editPopup.addEventListener('submit', (e) => {
+		popupEditeList.addEventListener('submit', (e) => {
 			e.preventDefault();
-			editPerson.lastName = editPopup.lastName.value;
-			editPerson.firstName = editPopup.firstName.value;
-			editPerson.jobTitle = editPopup.jobTitle.value;
-			editPerson.jobArea = editPopup.jobArea.value;
-			editPerson.phone = editPopup.phone.value;
+			editPerson.lastName = popupEditeList.lastName.value;
+			editPerson.firstName = popupEditeList.firstName.value;
+			editPerson.jobTitle = popupEditeList.jobTitle.value;
+			editPerson.jobArea = popupEditeList.jobArea.value;
+			editPerson.phone = popupEditeList.phone.value;
 			displayList(persons);
             resolve(e.currentTarget.remove());
-			destroyPopup(editPopup);
+			destroyPopup(popupEditeList);
 			
 		}, { once: true }
 		
 		);
 		
 		
-	resolve(document.body.appendChild(editPopup));
-	editPopup.classList.add('open');
+	resolve(document.body.appendChild(popupEditeList));
+	popupEditeList.classList.add('open');
 	
 });
 }
@@ -136,9 +136,9 @@ const editPartner = (id) => {
 const deletePartner = (id) => {
 	const deletePerson = persons.find(person => person.id === id);
 	return new Promise(async function(resolve) {
-		const deletePopup = document.createElement('form');
-		deletePopup.classList.add('popup');
-		deletePopup.insertAdjacentHTML(
+		const popupDeleteList = document.createElement('form');
+		popupDeleteList.classList.add('popup');
+		popupDeleteList.insertAdjacentHTML(
 			'afterbegin', 
 			`<fieldset>
 				<p>Are you sure you want to delete <strong>${deletePerson.lastName}?</strong></p>
@@ -147,44 +147,46 @@ const deletePartner = (id) => {
 			</fieldset>
 		`);
 
-		if(deletePopup.cancel) {
-			const skipButton = deletePopup.cancel;
+		if(popupDeleteList.cancel) {
+			const skipButton = popupDeleteList.cancel;
 			console.log(skipButton);
             skipButton.addEventListener('click', () => {
                 resolve(null);
-				destroyPopup(deletePopup);
+				destroyPopup(popupDeleteList);
 				
             }, { once: true });
 
 		}
-		const tableRow = tbody.querySelector("tr");
-		deletePopup.addEventListener('click', (e) => {
+		// const tableRow = tbody.querySelector("tr");
+		popupDeleteList.addEventListener('click', (e) => {
 			e.preventDefault();
-			// tableRow.remove();
-			// console.log(e.target.closest('tr'));
-            resolve(tableRow.remove());
-            destroyPopup(deletePopup);
+			if(e.target.closest('button.confirmed')) {
+			const personToDelete = persons.filter(person => person.id !== id);
+			persons = personToDelete;
+            displayList(personToDelete);
+			destroyPopup(popupDeleteList);
+			}
         }, { once: true }
 		);
-		// if(deletePopup.delete) {
-		// 	const skipButton = deletePopup.delete;
-		// 	skipButton.addEventListener('click', () => {
-        //         resolve(null);
-		// 		destroyPopup(deletePopup);
-				
-        //     }, { once: true });
-		// }
 		
-	resolve(document.body.appendChild(deletePopup));
+		if(popupDeleteList.delete) {
+			const skipButton = popupDeleteList.delete;
+			skipButton.addEventListener('click', () => {
+                resolve(null);
+				destroyPopup(popupDeleteList);
+            }, { once: true });
+		}
+		
+	resolve(document.body.appendChild(popupDeleteList));
 	
-	deletePopup.classList.add('open');
+	popupDeleteList.classList.add('open');
 	
 });
 	
 };
 
 
-// const deletePopup = () => {
+// const popupDeleteList = () => {
 	// create confirmation popup here
 // }
 

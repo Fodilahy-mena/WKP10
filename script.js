@@ -142,27 +142,38 @@ const deletePartner = (id) => {
 			'afterbegin', 
 			`<fieldset>
 				<p>Are you sure you want to delete <strong>${deletePerson.lastName}?</strong></p>
-				<button class="cancel2" name="cancel">Cancel</button>
-				<button type="submit" class="confirmed">OK</button>
+				<button type="button" class="cancel" name="cancel">Cancel</button>
+				<button type="submit" name="delete" class="confirmed">OK</button>
 			</fieldset>
 		`);
 
 		if(deletePopup.cancel) {
-            const skipButton = deletePopup.cancel;
+			const skipButton = deletePopup.cancel;
+			console.log(skipButton);
             skipButton.addEventListener('click', () => {
                 resolve(null);
-                destroyPopup(deletePopup);
+				destroyPopup(deletePopup);
+				
             }, { once: true });
 
-        }
-		deletePopup.addEventListener('submit', (e) => {
+		}
+		const tableRow = tbody.querySelector("tr");
+		deletePopup.addEventListener('click', (e) => {
 			e.preventDefault();
-			console.log('Submited');
-			console.log(e.target.closest('button'));
-            resolve();
+			// tableRow.remove();
+			// console.log(e.target.closest('tr'));
+            resolve(tableRow.remove());
             destroyPopup(deletePopup);
         }, { once: true }
-        );
+		);
+		// if(deletePopup.delete) {
+		// 	const skipButton = deletePopup.delete;
+		// 	skipButton.addEventListener('click', () => {
+        //         resolve(null);
+		// 		destroyPopup(deletePopup);
+				
+        //     }, { once: true });
+		// }
 		
 	resolve(document.body.appendChild(deletePopup));
 	
